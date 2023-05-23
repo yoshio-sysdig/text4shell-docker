@@ -33,7 +33,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Copy pom-vuln.xml -> pom.xml
-      run: cp "${GITHUB_WORKSPACE/pom-vuln.xml" "${GITHUB_WORKSPACE}/pom.xml"
+      run: cp "${GITHUB_WORKSPACE}/pom-vuln.xml" "${GITHUB_WORKSPACE}/pom.xml"
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
