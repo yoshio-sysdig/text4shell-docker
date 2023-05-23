@@ -1,5 +1,4 @@
 # Use an official OpenJDK runtime as a parent image
-
 FROM amazoncorretto:20-alpine
 
 # Alpine
