@@ -1,0 +1,69 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven - Vulnerable
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+env:
+  SYSDIG_URL: https://app.au1.sysdig.com
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}-vuln
+  BYPASS_SCAN_FAIL: true
+  
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Copy pom-vuln.xml -> pom.xml
+      run: cp "${GITHUB_WORKSPACE}/pom-vuln.xml" "${GITHUB_WORKSPACE}/pom.xml"
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '18'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom-vuln.xml
+
+    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+    #- name: Update dependency graph
+    #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+    
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile-vuln --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }} --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+    
+    - name: Sysdig Secure Inline Scan - New
+      run: |
+        curl -LO "https://download.sysdig.com/scanning/bin/sysdig-cli-scanner/$(curl -L -s https://download.sysdig.com/scanning/sysdig-cli-scanner/latest_version.txt)/linux/amd64/sysdig-cli-scanner"
+        chmod +x ./sysdig-cli-scanner
+        SECURE_API_TOKEN=${{ secrets.SECURE_API_TOKEN }} ./sysdig-cli-scanner --apiurl ${{env.SYSDIG_URL}} docker://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }} || ${{ env.BYPASS_SCAN_FAIL }}
+      
+    - name: Log in to the Container registry
+      run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ${{ env.REGISTRY }}
+    
+    - name: Push the Docker image
+      run: |
+        docker push -a ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
