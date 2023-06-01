@@ -1,8 +1,7 @@
-# Use an official OpenJDK runtime as a parent image
-
+# Use a recent official Amazon Corretto runtime image as a parent image
 FROM amazoncorretto:20-alpine
 
-# Alpine
+# Update Corretto packages
 RUN apk update && apk upgrade
 
 # Set the working directory to /app
