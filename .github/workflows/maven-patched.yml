@@ -24,7 +24,7 @@ env:
   SYSDIG_URL: https://app.au1.sysdig.com
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-patched
-  BYPASS_SCAN_FAIL: true
+  BYPASS_SCAN_FAIL: false
   
 jobs:
   build:
@@ -33,17 +33,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Copy pom-patched.xml -> pom.xml
-      run: cp "${GITHUB_WORKSPACE}/pom-patched.xml" "${GITHUB_WORKSPACE}/pom.xml"
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        java-version: '18'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom-patched.xml
-
+  
     - name: Build the Docker image
       run: docker build . --file Dockerfile-patched --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }} --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
     
@@ -57,4 +47,5 @@ jobs:
       run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ${{ env.REGISTRY }}
     
     - name: Push the Docker image
-      run: docker push -a ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      run: |
+        docker push -a ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
