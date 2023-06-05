@@ -7,6 +7,9 @@ RUN mvn -f /usr/src/app/pom.xml clean package
 # Use an official OpenJDK runtime as a parent image
 FROM amazoncorretto:20-alpine
 
+#Update apk update libcrypto3
+RUN apk update libcrypto3 libssl3
+
 # Set the working directory to /app
 WORKDIR /app
 
