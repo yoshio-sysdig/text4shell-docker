@@ -9,10 +9,6 @@
 name: Java CI with Maven - Vulnerable (Fail)
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
   workflow_dispatch:
     inputs:
       logLevel:
