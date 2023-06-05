@@ -1,16 +1,19 @@
-# Use a recent official Amazon Corretto runtime image as a parent image
-FROM amazoncorretto:20-alpine
+#Build w/Maven 3.9.3-AmazonCorretto-20
+FROM maven:3.9.2-amazoncorretto-20 as builder
+COPY src /usr/src/app/src
+COPY pom-patched.xml /usr/src/app/pom.xml
+RUN mvn -f /usr/src/app/pom.xml clean package
 
-# Update Corretto packages
-RUN apk update && apk upgrade
+# Use an official OpenJDK runtime as a parent image
+FROM amazoncorretto:20-alpine
 
 # Set the working directory to /app
 WORKDIR /app
 
 # Copy the fat jar into the container at /app
-COPY target/text4shell-poc.jar /app
+COPY --from=builder /usr/src/app/target/text4shell-poc.jar /app
 
-# Make port 8080 available to the world outside this container
+# Document Port 8080 Listening of application
 EXPOSE 8080
 
 # Run jar file when the container launches
