@@ -10,16 +10,7 @@ name: Java CI with Maven - Vulnerable (Fail)
 
 on:
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-        - info
-        - warning
-        - debug
+
 env:
   SYSDIG_URL: https://app.au1.sysdig.com
   REGISTRY: ghcr.io
