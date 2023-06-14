@@ -35,6 +35,7 @@ jobs:
         sysdig-secure-token: ${{ secrets.SECURE_API_TOKEN }}
         input-type: docker-daemon
         sysdig-secure-url: https://app.au1.sysdig.com
+        run-as-user: root
     
     - name: Sysdig Secure Inline Scan - New
       run: |
