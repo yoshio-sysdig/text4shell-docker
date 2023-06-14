@@ -34,6 +34,7 @@ jobs:
         image-tag: ${{ env.IMAGE_NAME }}:${{ github.run_number }} 
         sysdig-secure-token: ${{ secrets.SECURE_API_TOKEN }}
         input-type: docker-daemon
+        sysdig-secure-url: https://app.au1.sysdig.com
     
     - name: Sysdig Secure Inline Scan - New
       run: |
