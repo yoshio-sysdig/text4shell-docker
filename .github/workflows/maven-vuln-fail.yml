@@ -31,7 +31,7 @@ jobs:
     - name: Sysdig Secure Inline Scan - Legacy
       uses: sysdiglabs/scan-action@v3.5.0
       with:
-        image-tag: ${{ env.IMAGE_NAME }}:${{ github.run_number }} 
+        image-tag: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }}
         sysdig-secure-token: ${{ secrets.SECURE_API_TOKEN }}
         input-type: docker-daemon
         sysdig-secure-url: https://app.au1.sysdig.com
