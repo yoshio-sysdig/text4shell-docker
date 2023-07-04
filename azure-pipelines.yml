@@ -31,6 +31,7 @@ stages:
       inputs:
         sysdigurl: 'https://app.au1.sysdig.com'
         apikey: 'cf224533-3ba6-4085-a579-5556272efa3b'
-        image: '$(imageName):$(tag)'
+        # image: '$(imageName):$(tag)'
+        image: '$(REGISTRY)/$(IMAGE_NAME):$(Build.BuildNumber)'
         failBuild: true
         verbose: true
