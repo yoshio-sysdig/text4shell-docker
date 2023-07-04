@@ -10,6 +10,8 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  imageName: 'text4shell-vuln'
+  repository: 'aaronm-sysdig/text4shell-docker'
 
 stages:
 - stage: Build
@@ -25,6 +27,7 @@ stages:
       inputs:
         command: build
         dockerfile: '**/Dockerfile-vuln'
+        repository: '$(repository)'
         tags: |
           $(tag)
     - task: Sysdig@1
