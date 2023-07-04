@@ -11,7 +11,7 @@ resources:
 variables:
   tag: '$(Build.BuildId)'
   imageName: 'text4shell-vuln'
-  repository: 'aaronm-sysdig/text4shell-docker'
+  repository: 'aaronm-sysdig'
 
 stages:
 - stage: Build
