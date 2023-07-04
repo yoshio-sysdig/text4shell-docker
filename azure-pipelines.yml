@@ -27,7 +27,7 @@ stages:
       inputs:
         command: build
         dockerfile: '**/Dockerfile-vuln'
-        repository: '$(repository)'
+        repository: '$(imageName)'
         tags: |
           $(tag)
     - task: Sysdig@1
@@ -35,6 +35,6 @@ stages:
         sysdigurl: 'https://app.au1.sysdig.com'
         apikey: 'cf224533-3ba6-4085-a579-5556272efa3b'
         # image: '$(imageName):$(tag)'
-        image: '$(repository)/$(ImageName):$(tag)'
+        image: '$(ImageName):$(tag)'
         failBuild: true
         verbose: true
