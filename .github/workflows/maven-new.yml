@@ -44,7 +44,7 @@ jobs:
         IMAGE_TAG: latest
       run: |
         docker build . --file Dockerfile-patched --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }} --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-        docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        docker push 457076078044.dkr.ecr.ap-southeast-2.amazonaws.com/yoshi-ecr-repository:latest
 
 
 #   build:
