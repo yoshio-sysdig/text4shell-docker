@@ -13,7 +13,7 @@ on:
   
 env:
   SYSDIG_URL: https://app.au1.sysdig.com
-  REGISTRY: ghcr.io
+  REGISTRY: aws.ecr
   IMAGE_NAME: ${{ github.repository }}-patched
   BYPASS_SCAN_FAIL: false
   
@@ -44,6 +44,7 @@ jobs:
         IMAGE_TAG: latest
       run: |
         docker build . --file Dockerfile-patched --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.run_number }} --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
 
 #   build:
