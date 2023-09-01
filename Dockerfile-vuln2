@@ -1,0 +1,5 @@
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:8-jre-alpine
+
+#Update apk upgrade libcrypto3 and libssl explicitly to 3.0.9-r1
+RUN apk update && apk add musl==1.2.3-r5
