@@ -15,7 +15,7 @@ env:
   SYSDIG_URL: https://app.au1.sysdig.com
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-vuln
-  BYPASS_SCAN_FAIL: true
+  BYPASS_SCAN_FAIL: false
   
 jobs:
   build:
